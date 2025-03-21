@@ -970,6 +970,7 @@ const ResumeTemplatesGallery = ({ setFilePaths, setFileInfo, setSelectedTemplate
       gap: '15px',
       width: '80%',
     },
+    
     button: {
       padding: '5px 15px',
     },
@@ -1038,14 +1039,14 @@ const ResumeTemplatesGallery = ({ setFilePaths, setFileInfo, setSelectedTemplate
                 <div style={styles.cardBack}>
                   <div style={styles.buttonContainer}>
                     <Button 
-                      variant="outline-primary" 
+                      variant="warning" 
                       style={styles.button}
                       onClick={() => handlePreview(template)}
                     >
                       <EyeOutlined className="me-2" /> Preview Template
                     </Button>
                     <Button 
-                      variant="primary"
+                      variant="danger"
                       style={styles.button}
                       onClick={() => handleDownload(template)}
                     >
@@ -1087,72 +1088,172 @@ const ResumeTemplatesGallery = ({ setFilePaths, setFileInfo, setSelectedTemplate
         ))}
       </Row>
 
-      {/* Preview Modal */}
-      {selectedTemplate && (
-        <Modal show={!!selectedTemplate} onHide={() => setSelectedTemplate(null)} centered size="lg">
-          <Modal.Header closeButton>
-            <Modal.Title>{selectedTemplate.title}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <img 
-              src={selectedTemplate.photoUrl} 
-              alt={selectedTemplate.title} 
-              className="img-fluid mb-3 rounded" 
-              style={styles.modalImage}
+{selectedTemplate && (
+  <Modal 
+    show={!!selectedTemplate} 
+    onHide={() => setSelectedTemplate(null)} 
+    centered 
+    size="lg"
+  >
+    <Modal.Header closeButton style={{ backgroundColor: '#f8fafc', borderBottom: '1px solid #eaedf2' }}>
+      <Modal.Title style={{ color: '#345a91', fontWeight: '600' }}>{selectedTemplate.title}</Modal.Title>
+    </Modal.Header>
+    <Modal.Body style={{ backgroundColor: '#f8fafc', padding: '1.5rem' }}>
+      <img 
+        src={selectedTemplate.photoUrl} 
+        alt={selectedTemplate.title} 
+        className="img-fluid mb-3 rounded shadow-sm" 
+        style={styles.modalImage}
+      />
+      <Text style={{ color: '#5b6a7d', fontSize: '1rem' }}>{selectedTemplate.description}</Text>
+      <div className="mt-3">
+        {selectedTemplate.tags.map((tag) => (
+          <span 
+            key={tag} 
+            style={{
+              display: 'inline-block',
+              backgroundColor: '#e6eef8',
+              color: '#345a91',
+              borderRadius: '4px',
+              padding: '4px 12px',
+              margin: '0 8px 8px 0',
+              fontSize: '0.85rem',
+              fontWeight: '500',
+              border: '1px solid #d8e0eb'
+            }}
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+    </Modal.Body>
+    <Modal.Footer 
+      className="d-flex justify-content-center" 
+      style={{ 
+        backgroundColor: '#f8fafc', 
+        borderTop: '1px solid #eaedf2',
+        padding: '1.25rem'
+      }}
+    >
+      <Button 
+        className="mx-2 " 
+        onClick={() => setSelectedTemplate(null)}
+        style={{
+          backgroundColor: 'yellow',
+          color: 'white',
+          border: '1px solid #d8e0eb',
+          borderRadius: '8px',
+          minWidth: '120px',
+          padding: '10px 16px',
+          fontWeight: '500',
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'all 0.3s ease'
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.backgroundColor = '#e6eef8';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.backgroundColor = '#f0f4f9';
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
+        <CloseOutlined className="me-2" /> Close
+      </Button>
+      <Button 
+        className="mx-2 shadow-sm" 
+        onClick={() => handleDownload(selectedTemplate)}
+        style={{
+          backgroundColor: 'success',
+          color: 'white',
+          border: '1px solid #c6d7eb',
+          borderRadius: '8px',
+          minWidth: '140px',
+          padding: '10px 16px',
+          fontWeight: '600',
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'all 0.3s ease'
+        }}
+        onMouseOver={(e) => {
+          e.currentTarget.style.backgroundColor = 'red';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+          e.currentTarget.style.boxShadow = '0 4px 12px rgba(52, 90, 145, 0.15)';
+        }}
+        onMouseOut={(e) => {
+          e.currentTarget.style.backgroundColor = 'green';
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.08)';
+        }}
+      >
+        <DownloadOutlined className="me-2" /> Download
+      </Button>
+      <Button 
+        onClick={() => handleUploadTemplate(selectedTemplate)}
+        disabled={uploading}
+        className="mx-2 shadow"
+        style={{
+          backgroundColor: selectedCards[selectedTemplate.id] ? 'red' : '#e8f0fd',
+          color: selectedCards[selectedTemplate.id] ? 'white' : 'white',
+          border: selectedCards[selectedTemplate.id] ? '1px solid #b7e0d0' : '1px solid #bfd4ef',
+          borderRadius: '8px',
+          minWidth: '170px',
+          padding: '10px 16px',
+          fontWeight: '600',
+          position: 'relative',
+          overflow: 'hidden',
+          transition: 'all 0.3s ease'
+        }}
+        onMouseOver={(e) => {
+          if (!uploading) {
+            if (selectedCards[selectedTemplate.id]) {
+              e.currentTarget.style.backgroundColor = '#d7eae4';
+            } else {
+              e.currentTarget.style.backgroundColor = '#d6e5fa';
+            }
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+          }
+        }}
+        onMouseOut={(e) => {
+          if (!uploading) {
+            if (selectedCards[selectedTemplate.id]) {
+              e.currentTarget.style.backgroundColor = '#e7f3ee';
+            } else {
+              e.currentTarget.style.backgroundColor = '#e8f0fd';
+            }
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.08)';
+          }
+        }}
+      >
+        {uploading ? (
+          <>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              className="me-2"
             />
-            <Text>{selectedTemplate.description}</Text>
-            <div className="mt-3">
-              {selectedTemplate.tags.map((tag) => (
-                <Tag key={tag} color="blue" className="me-2 mb-2">{tag}</Tag>
-              ))}
-            </div>
-          </Modal.Body>
-          <Modal.Footer className="d-flex justify-content-center">
-            <Button 
-              variant="secondary" 
-              className="w-50 text-center" 
-              onClick={() => setSelectedTemplate(null)}
-            >
-              <CloseOutlined className="me-2" /> Close
-            </Button>
-            <Button 
-              variant="primary" 
-              className="w-50 text-center" 
-              onClick={() => handleDownload(selectedTemplate)}
-            >
-              <DownloadOutlined className="me-2" /> Download
-            </Button>
-            <Button 
-              variant={selectedCards[selectedTemplate.id] ? "success" : "primary"}
-              onClick={() => handleUploadTemplate(selectedTemplate)}
-              disabled={uploading}
-              className="w-50 text-center"
-            >
-              {uploading ? (
-                <>
-                  <Spinner
-                    as="span"
-                    animation="border"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                    className="me-2"
-                  />
-                  Uploading...
-                </>
-              ) : selectedCards[selectedTemplate.id] ? (
-                <>
-                  <CheckCircleOutlined className="me-2" /> Selected
-                </>
-              ) : (
-                <>
-                  <UploadOutlined className="me-2" /> Use This Template
-                </>
-              )}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )}
+            Uploading...
+          </>
+        ) : selectedCards[selectedTemplate.id] ? (
+          <>
+            <CheckCircleOutlined className="me-2" /> Selected
+          </>
+        ) : (
+          <>
+            <UploadOutlined className="me-2" /> Use This Template
+          </>
+        )}
+      </Button>
+    </Modal.Footer>
+  </Modal>
+)}
+      {/* )} */}
     </Container>
   );
 };

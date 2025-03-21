@@ -1288,7 +1288,8 @@ const UploadResume = ({ setFilePaths, setFileInfo, fileInfo }) => {
                       type="button"
                       style={{
                         ...styles.button,
-                        ...styles.secondaryButton,
+                        ...styles.primaryButton,
+                        opacity: 0.7
                       }}
                       onClick={() => fileInputRef.current.click()}
                       disabled={uploadState === 'uploading'}

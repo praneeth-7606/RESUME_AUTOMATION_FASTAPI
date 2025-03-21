@@ -1354,12 +1354,12 @@ const UploadSkillMatrix = ({ setFilePaths, setFileInfo, fileInfo }) => {
                       type="button"
                       style={{
                         ...styles.button,
-                        ...styles.secondaryButton,
+                        ...styles.primaryButton,
                       }}
                       onClick={() => fileInputRef.current.click()}
                       disabled={uploadState === 'uploading'}
                     >
-                      <UploadOutlined style={{ marginRight: '8px' }} />
+                      <UploadOutlined style={{ marginRight: '5px' }} />
                       Browse Files
                     </button>
                     
@@ -1368,7 +1368,7 @@ const UploadSkillMatrix = ({ setFilePaths, setFileInfo, fileInfo }) => {
                       style={{
                         ...styles.button,
                         ...styles.primaryButton,
-                        opacity: (!selectedFile || uploadState === 'uploading') ? 0.6 : 1,
+                        opacity: (!selectedFile || uploadState === 'uploading') ? 0.7 : 1,
                       }}
                       disabled={!selectedFile || uploadState === 'uploading'}
                     >
